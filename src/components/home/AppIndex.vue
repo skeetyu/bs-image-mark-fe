@@ -1,25 +1,37 @@
 <template>
-    <div>
-        <!-- <button>Hello World!</button> -->
-        <h2>这里是您的图像标注基地，点击上方菜单栏进行具体操作</h2>
-        <p>完</p>
-        <p>整</p>
-        <p>首</p>
-        <p>页</p>
-        <p>还</p>
-        <p>在</p>
-        <p>开</p>
-        <p>发</p>
-        <p>中</p>
-    </div>
+    <el-carousel  indicator-position="outside" type="card" 
+        left="50px" right="50px" height="600px">
+        <el-carousel-item v-for="(item,i) in homeList" :key="i">
+            <img :src="imgUrl ? imgUrl : require('../../assets/' + item.url + '.jpg')" alt=''>
+        </el-carousel-item>
+    </el-carousel>
 </template>
 
 <script>
     export default {
-        name: 'AppIndex'
+        name: 'AppIndex',
+        data(){
+            return {
+                homeList: [
+                    {url: 'jingling1', name: 'jingling1'},
+                    {url: 'jingling2', name: 'jingling2'},
+                    {url: 'jingling3', name: 'jingling3'},
+                    {url: 'jingling4', name: 'jingling4'}
+                ]
+            }
+        }
     }
 </script>
 
 <style scoped>
+    .el-carousel__item{
+    height: 500px;
+    top: 50px;
+    /* margin-top: 100px; */
+    }
 
+    .el-carousel__item img{
+        width: 100%;
+        height: 100%;
+    }
 </style>

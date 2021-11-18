@@ -4,8 +4,14 @@ import Home from '../components/Home.vue'
 import AppIndex from '../components/home/AppIndex.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
+
 import UserIndex from '../components/user/Index.vue'
+
 import GraphIndex from '../components/graph/Index.vue'
+import GraphPictures from '../components/graph/Pictures.vue'
+import GraphUnpublished from '../components/graph/Unpublished.vue'
+import GraphUpload from '../components/graph/Upload.vue'
+
 import TaskIndex from '../components/task/Index.vue'
 
 Vue.use(VueRouter)
@@ -30,7 +36,24 @@ const routes = [
       {
         path: '/graph',
         name: 'Graph',
-        component: GraphIndex
+        component: GraphIndex,
+        children:[
+          {
+            path: '/graph',
+            name: 'AllPictures',
+            component: GraphPictures
+          },
+          {
+            path: '/graph/unpublished',
+            name: 'UnpublishedPictures',
+            component: GraphUnpublished
+          },
+          {
+            path: '/graph/upload',
+            name: 'UploadPictures',
+            component: GraphUpload
+          }
+        ]
       },
       {
         path: '/task',

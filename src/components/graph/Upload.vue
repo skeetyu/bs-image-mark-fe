@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-row style="height: 840px;">
+    <h1> 这里是Upload </h1>
+    <el-row style="height:840px;">
       <!--<search-bar></search-bar>-->
       <el-tooltip effect="dark" placement="right"
                   v-for="item in books"
@@ -12,8 +13,8 @@
           <span>{{item.press}}</span>
         </p>
         <p slot="content" style="width: 300px" class="abstract">{{item.abs}}</p>
-        <el-card style="width: 230px;margin-bottom: 20px;height: 233px;float: left;margin-right: 15px" class="book"
-                 bodyStyle="padding:10px" shadow="hover">
+        <el-card style="width:230px; margin-bottom:20px; height:233px; float:left; margin-right:15px" 
+            class="picture" bodyStyle="padding:10px" shadow="hover">
           <div class="cover">
             <img :src="imgUrl ? imgUrl : require('../../assets/' + item.cover + '.jpg')" alt="封面">
           </div>
@@ -39,7 +40,7 @@
 
 <script>
   export default {
-    name: 'Picture',
+    name: 'Upload',
     data () {
       return {
         books: [
@@ -58,44 +59,49 @@
 </script>
 
 <style scoped>
-  .cover {
-    width: 230px;
-    height: 172px;
-    margin-bottom: 7px;
-    overflow: hidden;
-    cursor: pointer;
-  }
+    .picture{
+       top:80px;
+    }
 
-  img {
-    width: 230px;
-    height: 172px;
-    /*margin: 0 auto;*/
-  }
+    .cover {
+        width: 230px;
+        height: 172px;
+        /* top:80px; */
+        margin-bottom: 7px;
+        overflow: hidden;
+        cursor: pointer;
+    }
 
-  .title {
-    font-size: 14px;
-    text-align: center;
-  }
+    img {
+        width: 230px;
+        height: 172px;
+        /*margin: 0 auto;*/
+    }
 
-  .author {
-    color: #333;
-    width: 102px;
-    font-size: 13px;
-    margin-bottom: 6px;
-    text-align: center;
-  }
+    .title {
+        font-size: 14px;
+        text-align: center;
+    }
 
-  .abstract {
-    display: block;
-    line-height: 17px;
-  }
+    .author {
+        color: #333;
+        width: 102px;
+        font-size: 13px;
+        margin-bottom: 6px;
+        text-align: center;
+    }
 
-  a {
-    text-decoration: none;
-  }
+    .abstract {
+        display: block;
+        line-height: 17px;
+    }
 
-  a:link, a:visited, a:focus {
-    color: #3377aa;
-  }
+    a {
+       text-decoration: none;
+    }
+
+    a:link, a:visited, a:focus {
+       color: #3377aa;
+    }
 </style>
 

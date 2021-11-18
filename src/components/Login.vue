@@ -11,7 +11,7 @@
             <el-form-item>
                 <el-input type="password" v-model="loginForm.password" 
                     auto-complete="off" placeholder="密码"
-                    show-password="true" minlength="6">
+                    :show-password='true' minlength="6">
                 </el-input>
             </el-form-item>
             <el-form-item style="width: 100%">
@@ -48,7 +48,7 @@
                         }
                     })
                     .catch(failResponse => {
-                        console.log(failResponse); // 自己加的
+                        console.log(failResponse); 
                     })
             }
         }

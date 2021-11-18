@@ -34,7 +34,7 @@
     position: fixed;
     /* margin-left: 50%;
     left: -600px; */
-    /* top: 100px; */
+    top: 80px;
     width: 150px;
     text-align: left;
   }

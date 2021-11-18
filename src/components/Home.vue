@@ -1,15 +1,17 @@
 <template>
-    <div>
-        <nav-menu></nav-menu>
+    <el-container>
+        <el-header>
+            <Nav-menu></Nav-menu>
+        </el-header>
         <router-view/>
-    </div>
+    </el-container>
 </template>
 
 <script>
     import NavMenu from './common/NavMenu.vue'
     export default {
-        components: { NavMenu },
-        name: 'Home'
+        name: 'Home',
+        components: { NavMenu }
     }
 </script>
 
