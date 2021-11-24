@@ -25,6 +25,7 @@
 
 
 <script>
+import { ElMessage } from 'element-plus'
     export default {
         name: 'Login',
         data() {
@@ -33,10 +34,13 @@
                     username: '',
                     password: ''
                 },
+                alertVisible: false
             }
         },
         methods: {
             login() {
+                var _this = this
+                console.log(this.$store.state)
                 this.$axios
                     .post('/login', {
                         username: this.loginForm.username,
@@ -44,7 +48,28 @@
                     })
                     .then(successResponse => {
                         if(successResponse.data.code === 200){
-                            this.$router.replace({path: '/index'})
+                            // this.$alert('登录成功', '提示', {
+                            //     confirmButtonText: '确定'
+                            // })
+                            // const open2 = () => {
+                            // ElMessage({
+                            //     message: 'Congrats, this is a success message.',
+                            //     type: 'success',
+                            // })
+                            // }
+                            _this.$store.commit('login', _this.loginForm)
+                            var path = this.$route.query.redirect
+                            this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
+                        }else if(successResponse.data.code === 400){
+                            // this.$alert('账号名或密码错误', '提示', {
+                            //     confirmButtonText: '确定'
+                            // })
+                            ElMessage({
+                                message: 'Congrats',
+                                type: 'success',
+                            })
+                            this.loginForm.username = ''
+                            this.loginForm.password = ''
                         }
                     })
                     .catch(failResponse => {

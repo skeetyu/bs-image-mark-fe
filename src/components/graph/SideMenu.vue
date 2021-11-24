@@ -12,16 +12,16 @@
 
 <script>
     export default {
-          name: 'SideMenu',
-          data(){
-              return {
-                  sideList: [
-                      {name: '/graph', sideItem: '所有图片', icon: 'el-icon-tickets'},
-                      {name: '/graph/unpublished', sideItem: '未发布的', icon: 'el-icon-dish'},
-                      {name: '/graph/upload', sideItem: '图片上传', icon: 'el-icon-upload'}
-                  ]
-              }
-          }
+        name: 'SideMenu',
+        data(){
+            return {
+                sideList: [
+                    {name: '/graph', sideItem: '所有图片', icon: 'el-icon-tickets'},
+                    {name: '/graph/unpublished', sideItem: '未发布的', icon: 'el-icon-dish'},
+                    {name: '/graph/upload', sideItem: '图片上传', icon: 'el-icon-upload'}
+                ]
+            }
+        }
     }
 </script>
 
@@ -37,11 +37,11 @@
         box-shadow: 0 0 15px #cac6c6;
     }
     .el-menu-item.is-active {
-      background-color: #fff !important;
-      color: #fff;
-      span {
-        color: #fff !important;
-      }
+        background-color: #fff !important;
+        color: #fff;
+        span {
+            color: #fff !important;
+        }
     }
     .el-menu-item:hover{
         background-color: #fff;

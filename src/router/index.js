@@ -5,7 +5,7 @@ import AppIndex from '../components/home/AppIndex.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 
-import UserIndex from '../components/user/Index.vue'
+import UserIndex from '../components/user/User.vue'
 
 import GraphIndex from '../components/graph/Index.vue'
 import GraphPictures from '../components/graph/Pictures.vue'
@@ -31,34 +31,40 @@ const routes = [
       {
         path: '/user',
         name: 'User',
-        component: UserIndex
+        component: UserIndex,
+        meta: { requireAuth: true }
       },
       {
         path: '/graph',
         name: 'Graph',
         component: GraphIndex,
+        meta: { requireAuth: true },
         children:[
           {
             path: '/graph',
             name: 'AllPictures',
-            component: GraphPictures
+            component: GraphPictures,
+            meta: { requireAuth: true }
           },
           {
             path: '/graph/unpublished',
             name: 'UnpublishedPictures',
-            component: GraphUnpublished
+            component: GraphUnpublished,
+            meta: { requireAuth: true }
           },
           {
             path: '/graph/upload',
             name: 'UploadPictures',
-            component: GraphUpload
+            component: GraphUpload,
+            meta: { requireAuth: true }
           }
         ]
       },
       {
         path: '/task',
         name: 'Task',
-        component: TaskIndex
+        component: TaskIndex,
+        meta: { requireAuth: true }
       }
     ]
   },

@@ -32,7 +32,7 @@
                     {name: '/index', navItem: '首页', icon: 'el-icon-house'},
                     {name: '/graph', navItem: '图片中心', icon: 'el-icon-picture'},
                     {name: '/task', navItem: '任务中心', icon: 'el-icon-box'},
-                    {name: '/user', navItem: '个人中心', icon: 'el-icon-user'}
+                    {name: '/user', navItem: '用户', icon: 'el-icon-user'}
                 ]
             }
         },
