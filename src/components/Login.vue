@@ -1,5 +1,6 @@
 <template>
     <body id="poster">
+        <el-alert v-show="alertVisible" title="用户名或密码错误！" type="error" center show-icon> </el-alert>
         <el-form class="login-container" laber-position="left" labe-width="0px">
             <h2 class="welcome-title">欢迎来到您的图像标注基地</h2>
             <h3 class="login-title">用户登录</h3>
@@ -25,7 +26,6 @@
 
 
 <script>
-import { ElMessage } from 'element-plus'
     export default {
         name: 'Login',
         data() {
@@ -40,7 +40,6 @@ import { ElMessage } from 'element-plus'
         methods: {
             login() {
                 var _this = this
-                console.log(this.$store.state)
                 this.$axios
                     .post('/login', {
                         username: this.loginForm.username,
@@ -51,23 +50,11 @@ import { ElMessage } from 'element-plus'
                             // this.$alert('登录成功', '提示', {
                             //     confirmButtonText: '确定'
                             // })
-                            // const open2 = () => {
-                            // ElMessage({
-                            //     message: 'Congrats, this is a success message.',
-                            //     type: 'success',
-                            // })
-                            // }
                             _this.$store.commit('login', _this.loginForm)
                             var path = this.$route.query.redirect
                             this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
                         }else if(successResponse.data.code === 400){
-                            // this.$alert('账号名或密码错误', '提示', {
-                            //     confirmButtonText: '确定'
-                            // })
-                            ElMessage({
-                                message: 'Congrats',
-                                type: 'success',
-                            })
+                            this.alertVisible = true
                             this.loginForm.username = ''
                             this.loginForm.password = ''
                         }

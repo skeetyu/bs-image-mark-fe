@@ -3,8 +3,8 @@
         <el-main>
             <el-descriptions title="个人信息" 
                 direction="horizontal" :column="1" border class="table">
+                <el-descriptions-item label="用户ID">bx319000100{{uid}}</el-descriptions-item>
                 <el-descriptions-item label="用户昵称">{{username}}</el-descriptions-item>
-                <el-descriptions-item label="用户ID">bx319010112{{uid}}</el-descriptions-item>
                 <el-descriptions-item label="密码">
                     <el-button type="text" @click="dialogEditPasswordVisible=true">修改密码</el-button>
                         <el-dialog :visible.sync="dialogEditPasswordVisible" title="修改密码" width="400px" top="180px">
@@ -20,17 +20,17 @@
                                         :show-password='true' minlength="6">
                                     </el-input>
                                 </el-form-item>
-                                <el-form-item>
+                                <!-- <el-form-item>
                                     <el-input type="password" v-model="password.newpass" 
                                         auto-complete="off" placeholder="再次确认新密码"
                                         :show-password='true' minlength="6">
                                     </el-input>
-                                </el-form-item>
+                                </el-form-item> -->
                             </el-form>
                             <template #footer>
                             <span class="dialog-footer"> 
                                 <el-button @click="dialogEditPasswordVisible = false">Cancel</el-button>
-                                <el-button type="primary" @click="dialogEditPasswordVisible = false">Confirm</el-button>
+                                <el-button type="primary" v-on:click="editpassword">Confirm</el-button>
                             </span>
                             </template>
                         </el-dialog>
@@ -48,7 +48,15 @@
             <div class="buttongroup">
                 <el-button-group>
                     <el-button type="plain" size="medium" class="button" icon="el-icon-switch-button" v-on:click="logout">登出</el-button>
-                    <el-button type="plain" size="medium" class="button" icon="el-icon-remove">注销账号</el-button>
+                    <el-button type="plain" size="medium" class="button" icon="el-icon-remove" @click="unsubscribeVisible=true">注销账号</el-button>
+                        <el-dialog :visible.sync="unsubscribeVisible" title="确认注销？" append-to-body width="400px" top="180px">
+                            <template #footer>
+                            <span class="dialog-footer"> 
+                                <el-button @click="unsubscribeVisible = false">Cancel</el-button>
+                                <el-button type="primary" v-on:click="unsubscribe">Confirm</el-button>
+                            </span>
+                            </template>
+                        </el-dialog>
                 </el-button-group>
             </div>
         </el-main>
@@ -61,10 +69,11 @@
         data(){
             return {
                 dialogEditPasswordVisible: false,
+                unsubscribeVisible: false,
                 password: {
                     oldpass: '',
-                    newpass: '',
-                    repass: ''
+                    newpass: ''
+                    // repass: ''
                 }
                 // ,
                 // userinfo: {
@@ -80,13 +89,52 @@
         methods: {
             logout() {
                 var _this = this
-                console.log(this.$store.state)
                 this.$axios
                     .post('/logout')
                     .then(successResponse => {
                         if(successResponse.data.code === 200){
                             _this.$store.commit('logout')
                             _this.$router.replace('/login')
+                        }
+                    })
+                    .catch(failResponse => {
+                        console.log(failResponse); 
+                    })
+            },
+            unsubscribe() {
+                var _this = this
+                this.$axios
+                    .post('/unsubscribe')
+                    .then(successResponse => {
+                        if(successResponse.data.code === 200){
+                            this.$alert('注销成功', '提示', {
+                                confirmButtonText: '确定'
+                            })
+                            _this.$store.commit('logout')
+                            _this.$router.replace('/login')
+                        }
+                    })
+                    .catch(failResponse => {
+                        console.log(failResponse); 
+                    })
+            },
+            editpassword(){
+                var _this = this
+                _this.dialogEditPasswordVisible = false
+                this.$axios
+                    .post('/editpassword', {
+                        oldpassword: this.password.oldpass,
+                        newpassword: this.password.newpass,
+                    })
+                    .then(successResponse => {
+                        if(successResponse.data.code === 200){
+                            this.$alert('修改成功', '提示', {
+                                confirmButtonText: '确定'
+                            })
+                        }else if(successResponse.data.code === 400){
+                            this.$alert('修改失败（可能是旧密码错误）', '提示', {
+                                confirmButtonText: '确定'
+                            })
                         }
                     })
                     .catch(failResponse => {
