@@ -28,6 +28,7 @@
         name: 'NavMenu',
         data(){
             return {
+                imgUrl: '',
                 navList: [
                     {name: '/index', navItem: '首页', icon: 'el-icon-house'},
                     {name: '/graph', navItem: '图片中心', icon: 'el-icon-picture'},

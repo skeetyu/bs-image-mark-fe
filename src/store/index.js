@@ -8,11 +8,6 @@ export default new Vuex.Store({
         user: {
             username: window.localStorage.getItem('user' || '[]') == null ? 
                 '' : JSON.parse(window.localStorage.getItem('user' || '[]')).username
-        },
-        userinfo: {
-            name: '',
-            id: '',
-            email: ''
         }
     },
     mutations: {
@@ -22,13 +17,8 @@ export default new Vuex.Store({
         },
         logout(state){
             state.user = []
-            state.userinfo = []
+            // state.userinfo = []
             window.localStorage.removeItem('user')
-        },
-        setUserinfo(state, payload){
-            state.userinfo.name = payload.username
-            state.userinfo.id = payload.uid
-            state.userinfo.email = payload.email
         }
     }
 })

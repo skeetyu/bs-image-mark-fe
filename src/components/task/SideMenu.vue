@@ -1,42 +1,52 @@
 <template>
-  <el-menu
-    class = "categories"
-    default-active="0"
-    @select="handleSelect"
-    active-text-color="red">
-    <el-menu-item index="0">
-      <i class="el-icon-tickets"></i>
-      <span slot="title">任务栏</span>
-    </el-menu-item>
-    <el-menu-item index="1">
-      <i class="el-icon-dish"></i>
-      <span slot="title">当前任务</span>
-    </el-menu-item>
-    <el-menu-item index="2">
-      <i class="el-icon-finished"></i>
-      <span slot="title">历史任务</span>
-    </el-menu-item>
-    <el-menu-item index="3">
-      <i class="el-icon-box"></i>
-      <span slot="title">工作台</span>
-    </el-menu-item>
-  </el-menu>
+    <el-menu
+        class="sidemenu"
+        :default-active="$route.path"
+        router
+        active-text-color="coral">
+        <el-menu-item v-for="(item,i) in sideList" :key="i" :index="item.name" :class="item.icon">
+            {{ item.sideItem }}
+        </el-menu-item>
+    </el-menu>
 </template>
 
 <script>
-  export default {
-    name: 'SideMenu'
-  }
+    export default {
+        name: 'SideMenu',
+        data(){
+            return {
+                sideList: [
+                    {name: '/task', sideItem: '所有任务', icon: 'el-icon-tickets'},
+                    {name: '/task/prepared', sideItem: '待完成的', icon: 'el-icon-dish'},
+                    {name: '/task/workbench', sideItem: '工作台', icon: 'el-icon-working'}
+                ],
+            }
+        },
+        methods: {
+        }
+    }
 </script>
 
 <style scoped>
-  .categories {
-    position: fixed;
-    /* margin-left: 50%;
-    left: -600px; */
-    top: 80px;
-    width: 150px;
-    text-align: left;
-  }
+    .sidemenu{
+        position: fixed;
+        top: 80px;
+        width: 150px;
+        height: 85%;
+        text-align: left;
+        background: #fff;
+        border: 1px solid #eaeaea;
+        box-shadow: 0 0 15px #cac6c6;
+    }
+    .el-menu-item.is-active {
+        background-color: #fff !important;
+        color: #fff;
+        span {
+            color: #fff !important;
+        }
+    }
+    .el-menu-item:hover{
+        background-color: #fff;
+    }
 </style>
 

@@ -17,23 +17,10 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
-const getUser = (store) => {
-  console.log("yes")
-  axios.get('/getuser').then(resp =>{
-    console.log(resp)
-    console.log(resp.data)
-    store.commit('setUserinfo', {
-      username: resp.data.username,
-      uid: resp.data.uid,
-      email: resp.data.email
-    })
-  })
-}
-
 router.beforeEach((to, from, next) => {
-  if (store.state.user.username && to.path.startsWith('/user')) {
-    getUser(store)
-  }
+ // if (store.state.user.username && to.path.startsWith('/user')) {
+ //   getUser(store)
+ // }
   // // 已登录状态下访问 login 页面直接跳转到后台首页
   // if (store.state.user.username && to.path.startsWith('/login')) {
   //   next({
@@ -43,7 +30,6 @@ router.beforeEach((to, from, next) => {
   if(to.meta.requireAuth){
     if(store.state.user.username){
       axios.get('/authentication').then(resp => {
-        console.log(resp.data.code)
         if(resp) next()
       })
     }else{
@@ -55,9 +41,7 @@ router.beforeEach((to, from, next) => {
   }else{
     next()
   }
-}
-)
-
+})
 
 new Vue({
   router,

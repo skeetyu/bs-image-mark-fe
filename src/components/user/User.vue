@@ -3,8 +3,8 @@
         <el-main>
             <el-descriptions title="个人信息" 
                 direction="horizontal" :column="1" border class="table">
-                <el-descriptions-item label="用户ID">bx319000100{{uid}}</el-descriptions-item>
-                <el-descriptions-item label="用户昵称">{{username}}</el-descriptions-item>
+                <el-descriptions-item label="用户ID">bx319000100{{userinfo.id}}</el-descriptions-item>
+                <el-descriptions-item label="用户昵称">{{userinfo.name}}</el-descriptions-item>
                 <el-descriptions-item label="密码">
                     <el-button type="text" @click="dialogEditPasswordVisible=true">修改密码</el-button>
                         <el-dialog :visible.sync="dialogEditPasswordVisible" title="修改密码" width="400px" top="180px">
@@ -20,12 +20,6 @@
                                         :show-password='true' minlength="6">
                                     </el-input>
                                 </el-form-item>
-                                <!-- <el-form-item>
-                                    <el-input type="password" v-model="password.newpass" 
-                                        auto-complete="off" placeholder="再次确认新密码"
-                                        :show-password='true' minlength="6">
-                                    </el-input>
-                                </el-form-item> -->
                             </el-form>
                             <template #footer>
                             <span class="dialog-footer"> 
@@ -36,7 +30,7 @@
                         </el-dialog>
                 </el-descriptions-item>
                 <el-descriptions-item label="手机号">尚未填写</el-descriptions-item>
-                <el-descriptions-item label="邮箱">{{email}}</el-descriptions-item>
+                <el-descriptions-item label="邮箱">{{userinfo.email}}</el-descriptions-item>
                 <el-descriptions-item label="地址">
                     <el-tag size="small">Zhejiang University, Xihu District, Hangzhou City, Zhejiang Province</el-tag>
                 </el-descriptions-item>
@@ -73,39 +67,38 @@
                 password: {
                     oldpass: '',
                     newpass: ''
-                    // repass: ''
+                },
+                userinfo: {
+                    name: 'loading ... Please refresh the page',
+                    id: '*',
+                    email: 'loading ... Please refresh the page',
                 }
-                // ,
-                // userinfo: {
-                //     name: 'kooriookami',
-                //     id: '1',
-                //     phone: '19883146907',
-                //     email: '3190104803@zju.edu.cn',
-                //     profile: '这个家伙很懒，什么都没留下',
-                //     address: 'Zhejiang University, Xihu District, Hangzhou City, Zhejiang Province'
-                // }
             }
         },
+        mounted: function () {
+            this.getUser()
+        },
         methods: {
+            getUser() {
+                var _this = this
+                this.$axios.post('/getuser').then(successResponse => {
+                    this.userinfo.name = successResponse.data.username
+                    this.userinfo.id = successResponse.data.uid
+                    this.userinfo.email = successResponse.data.email
+                })
+            },
             logout() {
                 var _this = this
-                this.$axios
-                    .post('/logout')
-                    .then(successResponse => {
+                this.$axios.post('/logout').then(successResponse => {
                         if(successResponse.data.code === 200){
                             _this.$store.commit('logout')
                             _this.$router.replace('/login')
                         }
                     })
-                    .catch(failResponse => {
-                        console.log(failResponse); 
-                    })
             },
             unsubscribe() {
                 var _this = this
-                this.$axios
-                    .post('/unsubscribe')
-                    .then(successResponse => {
+                this.$axios.post('/unsubscribe').then(successResponse => {
                         if(successResponse.data.code === 200){
                             this.$alert('注销成功', '提示', {
                                 confirmButtonText: '确定'
@@ -114,19 +107,14 @@
                             _this.$router.replace('/login')
                         }
                     })
-                    .catch(failResponse => {
-                        console.log(failResponse); 
-                    })
             },
             editpassword(){
                 var _this = this
                 _this.dialogEditPasswordVisible = false
-                this.$axios
-                    .post('/editpassword', {
+                this.$axios.post('/editpassword', {
                         oldpassword: this.password.oldpass,
                         newpassword: this.password.newpass,
-                    })
-                    .then(successResponse => {
+                    }).then(successResponse => {
                         if(successResponse.data.code === 200){
                             this.$alert('修改成功', '提示', {
                                 confirmButtonText: '确定'
@@ -137,20 +125,6 @@
                             })
                         }
                     })
-                    .catch(failResponse => {
-                        console.log(failResponse); 
-                    })
-            }
-        },
-        computed: {
-            username(){
-                return this.$store.state.userinfo.name
-            },
-            uid(){
-                return this.$store.state.userinfo.id
-            },
-            email(){
-                return this.$store.state.userinfo.email
             }
         }
     }

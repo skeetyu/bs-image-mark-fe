@@ -10,9 +10,11 @@ import UserIndex from '../components/user/User.vue'
 import GraphIndex from '../components/graph/Index.vue'
 import GraphPictures from '../components/graph/Pictures.vue'
 import GraphUnpublished from '../components/graph/Unpublished.vue'
-import GraphUpload from '../components/graph/Upload.vue'
 
 import TaskIndex from '../components/task/Index.vue'
+import Tasks from '../components/task/Tasks.vue'
+import TaskPrepared from '../components/task/Prepared.vue'
+import Workbench from '../components/task/Workbench.vue'
 
 Vue.use(VueRouter)
 
@@ -51,12 +53,6 @@ const routes = [
             name: 'UnpublishedPictures',
             component: GraphUnpublished,
             meta: { requireAuth: true }
-          },
-          {
-            path: '/graph/upload',
-            name: 'UploadPictures',
-            component: GraphUpload,
-            meta: { requireAuth: true }
           }
         ]
       },
@@ -64,18 +60,30 @@ const routes = [
         path: '/task',
         name: 'Task',
         component: TaskIndex,
-        meta: { requireAuth: true }
+        meta: { requireAuth: true },
+        children:[
+          {
+            path: '/task',
+            name: 'AllTasks',
+            component: Tasks,
+            meta: { requireAuth: true }
+          },
+          {
+            path: '/task/prepared',
+            name: 'PreparedTasks',
+            component: TaskPrepared,
+            meta: { requireAuth: true }
+          },
+          {
+            path: '/task/workbench',
+            name: 'Workbench',
+            component: Workbench,
+            meta: { requireAuth: true }
+          }
+        ]
       }
     ]
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // },
   {
     path: '/login',
     name: 'Login',

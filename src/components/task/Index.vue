@@ -1,21 +1,17 @@
 <template>
     <el-container>
         <el-aside style="width:200px, margin-top:20px">
-            <!-- <el-switch></el-switch> -->
             <SideMenu></SideMenu>
         </el-aside>
-        <el-main>
-            <Bar class="taskbar-area"></Bar>
-        </el-main>
+        <router-view/>
     </el-container>
 </template>
 
 <script>
-    import SideMenu from './SideMenu.vue'
-    import Bar from './Bar.vue'
+    import SideMenu from './Sidemenu.vue'
     export default {
         name: 'TaskIndex',
-        components: {SideMenu, Bar}
+        components: { SideMenu }
     }
 </script>
 

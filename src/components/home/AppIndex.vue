@@ -12,6 +12,7 @@
         name: 'AppIndex',
         data(){
             return {
+                imgUrl: '',
                 homeList: [
                     {url: 'jingling1', name: 'jingling1'},
                     {url: 'jingling2', name: 'jingling2'},
