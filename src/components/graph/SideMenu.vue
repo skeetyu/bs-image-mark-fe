@@ -34,8 +34,7 @@
         data(){
             return {
                 sideList: [
-                    {name: '/graph', sideItem: '所有图片', icon: 'el-icon-tickets'},
-                    {name: '/graph/unpublished', sideItem: '未发布的', icon: 'el-icon-dish'}
+                    {name: '/graph', sideItem: '我的图片', icon: 'el-icon-picture-outline'}
                 ],
                 fileList: [],
                 url: ''
@@ -51,10 +50,10 @@
                 const isLt1M = file.size / 1024 / 1024 < 1
 
                 if (!isJPG && !isPNG) {
-                    this.$message.error('Avatar picture must be JPG or PNG format!')
+                    this.$message.error('上传图片必须是JPG或PNG格式！')
                 }
                 if (!isLt1M) {
-                    this.$message.error('Avatar picture size can not exceed 1MB!')
+                    this.$message.error('上传图片大小不得超过1MB！')
                 }
                 return (isJPG || isPNG) && isLt1M
             },
@@ -69,13 +68,9 @@
                 return this.$confirm(`确定移除 ${file.name}？`)
             },
             handleSuccess (response) {
-                console.log(response);
-                // this.url = response
-                // this.$emit('onUpload')
                 this.$message.success('上传成功')
             },
             clear () {
-                // this.$refs.upload.clearFiles()
             }
         }
     }
@@ -88,6 +83,7 @@
         width: 150px;
         height: 85%;
         text-align: left;
+        z-index: 5;
         background: #fff;
         border: 1px solid #eaeaea;
         box-shadow: 0 0 15px #cac6c6;

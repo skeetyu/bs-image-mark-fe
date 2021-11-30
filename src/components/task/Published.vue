@@ -16,7 +16,6 @@
                 <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
                         <el-button type="text" v-on:click="showTask(scope.row.name)">查看</el-button>
-                        <el-button type="text" v-if="scope.row.state==0" v-on:click="acceptTask(scope.row.name)">领取</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -40,7 +39,7 @@
 
 <script>
     export default {
-        name: 'Tasks',
+        name: 'TasksTodo',
         data () {
             return {
                 tasks: [],
@@ -51,12 +50,12 @@
             }
         },
         mounted: function() {
-            this.getTasks()
+            this.getPublishedTasks()
         },
         methods: {
-            getTasks() {
+            getPublishedTasks() {
                 var _this = this
-                this.$axios.post('/gettasks').then(successResponse => {
+                this.$axios.post('/getpublishedtasks').then(successResponse => {
                     if(successResponse && successResponse.data.code === 200) {
                         _this.tasks = successResponse.data.tasks
                     }
@@ -82,20 +81,6 @@
                 this.shownTask = ''
                 this.ifShown = false
                 this.pictures = []
-            },
-            acceptTask(taskname) {
-                var _this = this
-                this.$axios.post('/accepttask', {
-                    taskname: taskname
-                })
-                .then(successResponse => {
-                    if(successResponse.data.code === 200){
-                        this.$message.success('领取任务成功！')
-                        this.getTasks()
-                    }else if(successResponse.data.code === 400){
-                        this.$message.warning('不能领取自己发布的任务！')
-                    }
-                })
             }
         }
     }
@@ -103,6 +88,15 @@
 
 <style scoped>
     .table-border {
+        border-radius: 15px;
+        background-clip: padding-box;
+        padding: 10px 35px 15px 35px;
+        background: #fff;
+        border: 1px solid #eaeaea;
+        box-shadow: 0 0 15px #cac6c6;
+    }
+
+        .table-border {
         border-radius: 15px;
         background-clip: padding-box;
         padding: 10px 35px 15px 35px;
@@ -122,10 +116,5 @@
     img {
         width: 230px;
         height: 172px;
-    }
-
-    .title {
-        font-size: 14px;
-        text-align: center;
     }
 </style>

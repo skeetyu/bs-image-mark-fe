@@ -15,23 +15,27 @@
                 </el-table-column>
                 <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
-                        <el-button type="text" v-on:click="showTask(scope.row.name)">查看</el-button>
-                        <el-button type="text" v-if="scope.row.state==0" v-on:click="acceptTask(scope.row.name)">领取</el-button>
+                        <el-button type="text" v-if="scope.row.state==2" v-on:click="showTask(scope.row.name)">查看</el-button>
+                        <el-button type="text" v-if="scope.row.state==1" v-on:click="markTask(scope.row.name)">标注</el-button>
+                        <el-button type="text" v-if="scope.row.state==1" v-on:click="withdrawTask(scope.row.name)">取消领取</el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </el-row>
-        <el-dialog :visible.sync="ifShown" :title="shownTask" width="800px" top="150px">
+        <el-dialog :visible.sync="ifTodo" :title="todoTask" width="800px" top="150px">
             <el-row style="overflow-y:auto; height:250px">
-                <el-card style="width:230px; margin-bottom:20px; height:220px; float:left; margin-right:15px" 
-                    class="board" bodyStyle="padding:10px" shadow="hover" v-for="item in pictures" :key="item.id">
-                    <div class="picture"><img :src="imgUrl ? imgUrl : require('../../assets/upload/' + item.path)" alt="封面"></div>
-                    <div class="title">{{item.name}}</div>
-                </el-card>
+                <el-checkbox-group v-model="checkList" v-on:change="bindCheckBox">
+                    <el-card style="width:230px; margin-bottom:20px; height:220px; float:left; margin-right:15px" 
+                        class="board" bodyStyle="padding:10px" shadow="hover" v-for="item in pictures" :key="item.id">
+                        <div class="picture"><img :src="imgUrl ? imgUrl : require('../../assets/upload/' + item.path)" alt="封面"></div>
+                        <el-checkbox class="title" :label="item.name"></el-checkbox>
+                    </el-card>
+                </el-checkbox-group>
             </el-row>
             <template #footer>
             <span>
-                <el-button type="primary" size="medium" v-on:click="closeShown">关闭</el-button>
+                <el-button type="primary" size="medium" v-on:click="closeMark">关闭</el-button>
+                <el-button type="primary" size="medium" v-on:click="gotoMark">标注</el-button>
             </span>
             </template>
         </el-dialog>
@@ -40,37 +44,43 @@
 
 <script>
     export default {
-        name: 'Tasks',
+        name: 'TasksTodo',
         data () {
             return {
                 tasks: [],
                 shownTask: '',
                 ifShown: false,
+                todoTask: '',
+                ifTodo: false,
                 imgUrl: '',
-                pictures: []
+                pictures: [],
+                checkList: []
             }
         },
         mounted: function() {
-            this.getTasks()
+            this.getTodoTasks()
         },
         methods: {
-            getTasks() {
+            getTodoTasks() {
                 var _this = this
-                this.$axios.post('/gettasks').then(successResponse => {
+                this.$axios.post('/gettodotasks').then(successResponse => {
                     if(successResponse && successResponse.data.code === 200) {
                         _this.tasks = successResponse.data.tasks
                     }
                 })
             },
             showTask(taskname) {
-                this.shownTask = taskname
-                this.ifShown = true
-                this.getGraphs()
+                this.$message.warning('需要展示标注后的图片，还有待开发')
             },
-            getGraphs(){
+            markTask(taskname) {
+                this.todoTask = taskname
+                this.ifTodo = true
+                this.getUnmarkedGraphs()
+            },
+            getUnmarkedGraphs(){
                 var _this = this
                 this.$axios.post('gettaskgraphs', {
-                    taskname: this.shownTask
+                    taskname: this.todoTask
                 })
                 .then(successResponse => {
                     if(successResponse && successResponse.data.code === 200) {
@@ -78,24 +88,32 @@
                     }
                 })
             },
-            closeShown(){
-                this.shownTask = ''
-                this.ifShown = false
+            closeMark(){
+                this.todoTask = ''
+                this.ifTodo = false
                 this.pictures = []
             },
-            acceptTask(taskname) {
+            withdrawTask(taskname) {
                 var _this = this
-                this.$axios.post('/accepttask', {
+                this.$axios.post('/withdrawtask', {
                     taskname: taskname
                 })
                 .then(successResponse => {
-                    if(successResponse.data.code === 200){
-                        this.$message.success('领取任务成功！')
-                        this.getTasks()
-                    }else if(successResponse.data.code === 400){
-                        this.$message.warning('不能领取自己发布的任务！')
+                    if(successResponse && successResponse.data.code === 200){
+                        this.$message.success('取消成功')
+                        this.getTodoTasks()
                     }
                 })
+            },
+            bindCheckBox(){
+                console.log('bindcheckbox')
+                console.log(this.checkList)
+                if(this.checkList.length > 1){
+                    this.checkList.splice(0,1)
+                }
+            },
+            gotoMark(){
+                this.$message.warning('去 标 注 ！')
             }
         }
     }
@@ -122,10 +140,5 @@
     img {
         width: 230px;
         height: 172px;
-    }
-
-    .title {
-        font-size: 14px;
-        text-align: center;
     }
 </style>

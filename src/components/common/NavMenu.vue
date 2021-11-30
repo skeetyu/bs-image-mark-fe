@@ -30,10 +30,10 @@
             return {
                 imgUrl: '',
                 navList: [
-                    {name: '/index', navItem: '首页', icon: 'el-icon-house'},
+                    {name: '/index', navItem: '首页', icon: 'el-icon-s-home'},
                     {name: '/graph', navItem: '图片中心', icon: 'el-icon-picture'},
-                    {name: '/task', navItem: '任务中心', icon: 'el-icon-box'},
-                    {name: '/user', navItem: '用户', icon: 'el-icon-user'}
+                    {name: '/task', navItem: '任务中心', icon: 'el-icon-s-claim'},
+                    {name: '/user', navItem: '用户', icon: 'el-icon-user-solid'}
                 ]
             }
         },
@@ -55,7 +55,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 1;
+        z-index: 10;
         width: 100%;
         /* background: rgb(252, 242, 242);
         border: 1px solid #eaeaea;
@@ -63,6 +63,6 @@
         
         background: #fff;
         border: 1px solid #eaeaea;
-        box-shadow: 0 0 25px #cac6c6;
+        box-shadow: 0 0 10px #cac6c6;
     }
 </style>

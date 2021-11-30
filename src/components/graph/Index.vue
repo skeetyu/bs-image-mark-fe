@@ -3,9 +3,9 @@
         <el-aside style="width:200px, margin-top:20px">
             <SideMenu></SideMenu>
         </el-aside>
-        <!-- <el-main> -->
+        <el-main>
         <router-view/>
-        <!-- </el-main> -->
+        </el-main>
     </el-container>
 </template>
 
@@ -19,7 +19,7 @@
 
 <style scoped>
     /* .picture-area{
-        width: 990px;
+        width: 80px;
         margin-left: auto;
         margin-right: auto;
     } */

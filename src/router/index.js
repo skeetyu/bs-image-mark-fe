@@ -9,11 +9,11 @@ import UserIndex from '../components/user/User.vue'
 
 import GraphIndex from '../components/graph/Index.vue'
 import GraphPictures from '../components/graph/Pictures.vue'
-import GraphUnpublished from '../components/graph/Unpublished.vue'
 
 import TaskIndex from '../components/task/Index.vue'
 import Tasks from '../components/task/Tasks.vue'
-import TaskPrepared from '../components/task/Prepared.vue'
+import TaskTodo from '../components/task/Todo.vue'
+import TaskPublished from '../components/task/Published.vue'
 import Workbench from '../components/task/Workbench.vue'
 
 Vue.use(VueRouter)
@@ -47,12 +47,6 @@ const routes = [
             name: 'AllPictures',
             component: GraphPictures,
             meta: { requireAuth: true }
-          },
-          {
-            path: '/graph/unpublished',
-            name: 'UnpublishedPictures',
-            component: GraphUnpublished,
-            meta: { requireAuth: true }
           }
         ]
       },
@@ -69,9 +63,15 @@ const routes = [
             meta: { requireAuth: true }
           },
           {
-            path: '/task/prepared',
-            name: 'PreparedTasks',
-            component: TaskPrepared,
+            path: '/task/todo',
+            name: 'TodoTasks',
+            component: TaskTodo,
+            meta: { requireAuth: true }
+          },
+          {
+            path: '/task/published',
+            name: 'PublishedTasks',
+            component: TaskPublished,
             meta: { requireAuth: true }
           },
           {
