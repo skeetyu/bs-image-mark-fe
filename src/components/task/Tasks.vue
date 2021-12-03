@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row style="left:180px; top:20px; height:840px">
+        <el-row style="left:180px; width:1200px; height:840px">
             <el-table class="table-border" stripe :data="tasks">
                 <el-table-column prop="tid" label="编号" width="200"></el-table-column>
                 <el-table-column prop="name" label="名称" width="200"></el-table-column>
@@ -9,13 +9,14 @@
                 <el-table-column prop="tid" label="状态" width="180">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.state==0">待领取</el-tag>
-                        <el-tag type="info" v-if="scope.row.state==1">待完成</el-tag>
-                        <el-tag type="success" v-if="scope.row.state==2">已完成</el-tag>
+                        <el-tag type="info" v-if="scope.row.state==1">已领取</el-tag>
+                        <el-tag type="warning" v-if="scope.row.state==2">进行中</el-tag>
+                        <el-tag type="success" v-if="scope.row.state==3">已完成</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
-                        <el-button type="text" v-on:click="showTask(scope.row.name)">查看</el-button>
+                        <el-button type="text" v-on:click="showTask(scope.row.name)">预览</el-button>
                         <el-button type="text" v-if="scope.row.state==0" v-on:click="acceptTask(scope.row.name)">领取</el-button>
                     </template>
                 </el-table-column>
