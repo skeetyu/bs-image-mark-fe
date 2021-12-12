@@ -73,7 +73,7 @@
             },
             getGraphs(){
                 var _this = this
-                this.$axios.post('gettaskgraphs', {
+                this.$axios.post('/gettaskgraphs', {
                     taskname: this.shownTask
                 })
                 .then(successResponse => {

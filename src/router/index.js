@@ -9,6 +9,7 @@ import UserIndex from '../components/user/User.vue'
 
 import GraphIndex from '../components/graph/Index.vue'
 import GraphPictures from '../components/graph/Pictures.vue'
+import Video from '../components/graph/Video.vue'
 
 import TaskIndex from '../components/task/Index.vue'
 import Tasks from '../components/task/Tasks.vue'
@@ -49,6 +50,12 @@ const routes = [
             meta: { requireAuth: true }
           }
         ]
+      },
+      {
+        path: '/graph/video',
+        name: 'Video',
+        component: Video,
+        meta: { requireAuth: true }
       },
       {
         path: '/task',

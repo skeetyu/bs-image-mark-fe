@@ -17,7 +17,7 @@
             return {
                 sideList: [
                     {name: '/task', sideItem: '公开任务', icon: 'el-icon-collection'},
-                    {name: '/task/todo', sideItem: '我的待办', icon: 'el-icon-tickets'},
+                    {name: '/task/todo', sideItem: '我领取的', icon: 'el-icon-tickets'},
                     {name: '/task/published', sideItem: '我发布的', icon: 'el-icon-folder-checked'},
                     {name: '/task/workbench', sideItem: '工作台', icon: 'el-icon-table-lamp'}
                 ],

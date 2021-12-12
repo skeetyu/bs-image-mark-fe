@@ -1,6 +1,5 @@
 <template>
     <body id="poster">
-        <el-alert v-show="alertVisible" title="用户名或密码错误！" type="error" center show-icon> </el-alert>
         <el-form class="login-container" laber-position="left" labe-width="0px">
             <h2 class="welcome-title">欢迎来到您的图像标注基地</h2>
             <h3 class="login-title">用户登录</h3>
@@ -33,8 +32,7 @@
                 loginForm: {
                     username: '',
                     password: ''
-                },
-                alertVisible: false
+                }
             }
         },
         methods: {
@@ -54,7 +52,7 @@
                             var path = this.$route.query.redirect
                             this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
                         }else if(successResponse.data.code === 400){
-                            this.alertVisible = true
+                            this.$message.error('用户名或密码错误！')
                             this.loginForm.username = ''
                             this.loginForm.password = ''
                         }
@@ -83,8 +81,7 @@
     .login-container {
         border-radius: 15px;
         background-clip: padding-box;
-        /* margin: 150px auto; */
-        margin-top: 0px;
+        margin: 150px auto;
         width: 400px;
         padding: 20px 35px 15px 35px;
         background: #fff;

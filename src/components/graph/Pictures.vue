@@ -1,5 +1,8 @@
 <template>
     <div>
+        <el-button type="primary" plain size="mini" class="btn" @click="createTaskVisible = true">
+        <i class="el-icon-position"> 创建任务</i>
+        </el-button>
         <el-row style="left:180px; top:20px; height:840px">
             <!-- <el-col :span="20"> -->
             <el-checkbox-group v-model="checkList">
@@ -11,9 +14,6 @@
             </el-checkbox-group>
             <!-- </el-col> -->
         </el-row>
-        <el-button type="primary" plain size="mini" class="select" @click="createTaskVisible = true">
-        <i class="el-icon-position"> 创建任务</i>
-        </el-button>
         <el-dialog :visible.sync="createTaskVisible" title="创建任务" width="400px" top="180px">
             <el-form>
                 <el-form-item>
@@ -58,18 +58,22 @@
             },
             createTask() {
                 var _this = this
-                this.$axios.post('/createtask', {
-                    graphs: this.checkList,
-                    taskname: this.taskname
-                })
-                .then(successResponse => {
-                    if(successResponse.data.code === 200){
-                        this.$message.success('创建任务成功！已发布')
-                    }else if(successResponse.data.code === 400){
-                        this.$message.error('创建失败！任务名重复')
-                    }
-                })
-                this.createTaskVisible = false
+                if(this.checkList.length === 0){
+                    this.$message.error('请选择要创建任务的图片！')
+                }else{
+                    this.$axios.post('/createtask', {
+                        graphs: this.checkList,
+                        taskname: this.taskname
+                    })
+                    .then(successResponse => {
+                        if(successResponse.data.code === 200){
+                            this.$message.success('创建任务成功！已发布')
+                        }else if(successResponse.data.code === 400){
+                            this.$message.error('创建失败！任务名重复')
+                        }
+                    })
+                    this.createTaskVisible = false
+                }
             }
         }
     }
@@ -100,11 +104,10 @@
         text-align: center;
     }
 
-    .select {
+    .btn {
         position: fixed;
         left: 21px;
-        /* top: 260px; */
-        top: 210px;
+        top: 150px;
         z-index: 7;
     }
 </style>

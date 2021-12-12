@@ -82,10 +82,15 @@
             getUser() {
                 var _this = this
                 this.$axios.post('/getuser').then(successResponse => {
-                    this.$message.success('成功刷新用户信息')
-                    this.userinfo.name = successResponse.data.username
-                    this.userinfo.id = successResponse.data.uid
-                    this.userinfo.email = successResponse.data.email
+                    if(successResponse.data.username){
+                        this.$message.success('成功刷新用户信息')
+                        this.userinfo.name = successResponse.data.username
+                        this.userinfo.id = successResponse.data.uid
+                        this.userinfo.email = successResponse.data.email
+                    }else{
+                        this.$message.error('请先登录')
+                        this.$router.replace('/login')
+                    }
                 })
             },
             logout() {

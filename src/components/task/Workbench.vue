@@ -10,6 +10,7 @@
                     <el-button type="primary" size="small" style="float:left" v-on:click="isDrawing=true" v-if="isDrawing==false && role==0">绘制矩形</el-button>
                     <el-button type="primary" size="small" style="float:left" v-on:click="isDrawing=true" v-if="isDrawing==false && role==1" disabled>绘制矩形</el-button>
                     <el-button type="info" size="small" style="float:left" v-on:click="isDrawing=false" v-if="isDrawing==true">取消绘制</el-button>
+                    
                     <el-select v-model="tag" size="small" filterable allow-create default-first-option placeholder="请选择标注集的标签(可多选,可手动输入)" 
                         multiple style="float:left; margin-left:10px; width:280px;" v-if="role==0">
                         <el-option v-for="item in tagoptions" :key="item" :label="item" :value="item"></el-option>
@@ -18,12 +19,19 @@
                         multiple style="float:left; margin-left:10px; width:280px;" v-if="role==1" disabled>
                         <el-option v-for="item in tagoptions" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
+
                     <el-input v-model="description" :autosize="{minRows:1, maxRows:2}" type="textarea" placeholder="请输入对标注集的描述：" 
                         style="float:left; margin-left:10px; width:300px" v-if="role==0"/>
                     <el-input v-model="description" :autosize="{minRows:1, maxRows:2}" type="textarea" placeholder="请输入对标注集的描述：" 
                         style="float:left; margin-left:10px; width:300px" v-if="role==1" disabled/>
                     <el-button type="primary" size="small" style="float:left; margin-left:10px" v-on:click="submitMark" v-if="role==0">提交</el-button>
-                    <el-button type="primary" size="small" style="float:left; margin-left:10px" v-if="role==1">导出</el-button>
+                    
+                    <el-select v-model="annotationtype" size="small" default-first-option placeholder="请选择导出数据集格式" 
+                        style="float:left; margin-left:10px; width:180px;" v-if="role==1">
+                        <el-option label="PASCAL VOC(.xml)" value="PASCAL VOC(.xml)"></el-option>
+                        <el-option label="COCO(.txt)" value="COCO(.txt)"></el-option>
+                    </el-select>
+                    <el-button type="primary" size="small" style="float:left; margin-left:5px" v-on:click="exportMark" v-if="role==1">导出</el-button>
                 </el-row>
             </el-header>
             <el-main>
@@ -90,7 +98,8 @@
                 tagoptions: ['自然', '人物', '建筑', "动漫"],
                 tag: [],
                 tagstring: '',
-                description: ''
+                description: '',
+                annotationtype: []
             }
         },
         mounted() {
@@ -229,6 +238,27 @@
                         this.$message.error('提交失败！')
                     }
                 })
+            },
+            exportMark(){
+                if(this.notation.length !== 0){
+                    this.$axios.post('/exportmark', {
+                        task: this.task,
+                        graph: this.graph,
+                        path: this.path,
+                        width: this.img.width,
+                        height: this.img.height,
+                        type: this.annotationtype
+                    })
+                    .then(successResponse => {
+                        if(successResponse.data.code === 200){
+                            this.$message.success('导出成功！')
+                        }else{
+                            this.$message.error('导出失败！')
+                        }
+                    })
+                }else{
+                    this.$message.warning('当前还没有数据集可导出')
+                }
             }
         }
     }
