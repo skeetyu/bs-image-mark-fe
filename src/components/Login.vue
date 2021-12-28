@@ -38,28 +38,25 @@
         methods: {
             login() {
                 var _this = this
-                this.$axios
-                    .post('/login', {
+                this.$axios.post('/login', {
                         username: this.loginForm.username,
                         password: this.loginForm.password
-                    })
-                    .then(successResponse => {
-                        if(successResponse.data.code === 200){
-                            // this.$alert('登录成功', '提示', {
-                            //     confirmButtonText: '确定'
-                            // })
-                            _this.$store.commit('login', _this.loginForm)
-                            var path = this.$route.query.redirect
-                            this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
-                        }else if(successResponse.data.code === 400){
-                            this.$message.error('用户名或密码错误！')
-                            this.loginForm.username = ''
-                            this.loginForm.password = ''
-                        }
-                    })
-                    .catch(failResponse => {
-                        console.log(failResponse); 
-                    })
+                })
+                .then(successResponse => {
+                    if(successResponse.data.code === 200){
+                        this.$message.success('登录成功！')
+                        _this.$store.commit('login', _this.loginForm)
+                        var path = this.$route.query.redirect
+                        this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
+                    }else if(successResponse.data.code === 400){
+                        this.$message.error('用户名或密码错误！')
+                        this.loginForm.username = ''
+                        this.loginForm.password = ''
+                    }
+                })
+                .catch(failResponse => {
+                    console.log(failResponse); 
+                })
             }
         }
     }

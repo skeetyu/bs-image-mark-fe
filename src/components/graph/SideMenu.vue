@@ -18,7 +18,7 @@
                 :before-upload="beforeUploadPictures"
                 multiple
                 :with-credentials='true'
-                :limit="3"
+                :limit="5"
                 :on-exceed="handleExceedPictures"
                 :file-list="fileList">
                 <el-button type="primary" plain size="mini" class="el-icon-upload">
@@ -67,7 +67,7 @@
                     this.$message.error('上传图片必须为JPG或PNG格式！')
                 }
                 if (!isLt1M) {
-                    this.$message.error('上传图片大小不得超过1MB！')
+                    this.$message.error('上传图片大小不得超过5MB！')
                 }
                 return (isJPG || isPNG) && isLt1M
             },
@@ -88,7 +88,7 @@
             handlePreview (file) {
             },
             handleExceedPictures (files, fileList) {
-                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+                this.$message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
             },
             beforeRemove (file, fileList) {
                 // return this.$confirm(`确定移除 ${file.name}？`)

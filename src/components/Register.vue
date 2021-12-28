@@ -1,6 +1,5 @@
 <template>
     <body id="poster">
-        <el-alert v-show="alertVisible" :title="errormsg" type="error" center show-icon :closable="false"></el-alert>
         <el-form class="login-container" laber-position="left" labe-width="0px">
             <h3 class="login-title">用户注册</h3>
             <el-form-item>
@@ -39,38 +38,52 @@
                     password: '',
                     email: ''
                 },
-                errormsg: '',
-                alertVisible: false
             }
         },
         methods: {
             register() {
                 var _this = this
-                this.$axios
-                    .post('/register', {
+                var uPattern = /^[a-zA-Z0-9]{6,16}$/;
+                var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[a-zA-Z]).*$/
+                var ePattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+                var flag = true
+                if(!uPattern.test(this.registerForm.username)){
+                    this.$message.error('用户名须为6-16位，包含字母或数字')
+                    this.registerForm.username = ''
+                    flag = false
+                }
+                if(flag && !pPattern.test(this.registerForm.password)){
+                    this.$message.error('密码长度至少为6位，且必须同时包含字母与数字')
+                    this.registerForm.password = ''
+                    flag = false
+                }
+                if(flag && !ePattern.test(this.registerForm.email)){
+                    this.$message.error('邮箱格式不正确')
+                    this.registerForm.email = ''
+                    flag = false
+                }
+                if(flag){
+                    this.$axios.post('/register', {
                         username: this.registerForm.username,
                         password: this.registerForm.password,
                         email: this.registerForm.email
                     })
                     .then(successResponse => {
                         if(successResponse.data.code === 200){
-                            this.$alert('注册成功，请登录', '提示', {
-                                confirmButtonText: '确定'
-                            })
-                            this.$router.replace({path: '/login'})
+                            this.$message.success('注册成功！')
+                            // this.$router.replace({path: '/login'})
                         }else if(successResponse.data.code === 401){
-                            this.errormsg = '用户名已存在'
-                            this.alertVisible = true
-                            // console.log("用户名已存在");
+                            this.$message.error('用户名已存在！')
+                            this.registerForm.username = ''
                         }else if(successResponse.data.code === 402){
-                            this.errormsg = '邮箱已被使用'
-                            this.alertVisible = true
-                            // console.log("邮箱已被使用");
+                            this.$message.error('邮箱已存在！')
+                            this.registerForm.email = ''
                         }
                     })
                     .catch(failResponse => {
                         console.log(failResponse);
                     })
+                }
             }
         }
     }

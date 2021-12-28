@@ -96,39 +96,39 @@
             logout() {
                 var _this = this
                 this.$axios.post('/logout').then(successResponse => {
-                        if(successResponse.data.code === 200){
-                            this.$message.success('登出成功')
-                            _this.$store.commit('logout')
-                            _this.$router.replace('/login')
-                        }
-                    })
+                    if(successResponse.data.code === 200){
+                        this.$message.success('登出成功')
+                        _this.$store.commit('logout')
+                        _this.$router.replace('/login')
+                    }
+                })
             },
             unsubscribe() {
                 var _this = this
                 this.$axios.post('/unsubscribe').then(successResponse => {
-                        if(successResponse.data.code === 200){
-                            this.$message.success('注销成功')
-                            _this.$store.commit('logout')
-                            _this.$router.replace('/login')
-                        }else{
-                            this.$message.error('注销失败')
-                        }
-                    })
+                    if(successResponse.data.code === 200){
+                        this.$message.success('注销成功')
+                        _this.$store.commit('logout')
+                        _this.$router.replace('/login')
+                    }else{
+                        this.$message.error('注销失败')
+                    }
+                })
             },
             editpassword(){
                 var _this = this
                 _this.dialogEditPasswordVisible = false
                 this.$axios.post('/editpassword', {
-                        oldpassword: this.password.oldpass,
-                        newpassword: this.password.newpass,
-                    }).then(successResponse => {
-                        if(successResponse.data.code === 200){
-                            this.$message.success('修改成功')
-                        }else if(successResponse.data.code === 400){
-                            this.$message.error('修改失败（请检查密码输入是否正确')
-                        }
-                    })
-            }
+                    oldpassword: this.password.oldpass,
+                    newpassword: this.password.newpass,
+                }).then(successResponse => {
+                    if(successResponse.data.code === 200){
+                        this.$message.success('修改成功')
+                    }else if(successResponse.data.code === 400){
+                        this.$message.error('修改失败（请检查密码输入是否正确')
+                    }
+                })
+            },
         }
     }
 </script>
