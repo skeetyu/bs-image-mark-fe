@@ -240,24 +240,57 @@
                 })
             },
             exportMark(){
-                if(this.notation.length !== 0){
-                    this.$axios.post('/exportmark', {
-                        task: this.task,
-                        graph: this.graph,
-                        path: this.path,
-                        width: this.img.width,
-                        height: this.img.height,
-                        type: this.annotationtype
-                    })
-                    .then(successResponse => {
-                        if(successResponse.data.code === 200){
-                            this.$message.success('导出成功！')
-                        }else{
-                            this.$message.error('导出失败！')
-                        }
-                    })
+                if(this.annotationtype.length !== 0){
+                    if(this.notation.length !== 0){
+                        this.$axios.post('/exportmark', {
+                            task: this.task,
+                            graph: this.graph,
+                            path: this.path,
+                            width: this.img.width,
+                            height: this.img.height,
+                            type: this.annotationtype
+                        })
+                        .then(successResponse => {
+                            const { data } = successResponse;
+                            if(this.annotationtype === 'PASCAL VOC(.xml)'){
+                                const blob = new Blob([data]);
+                                let fileName = this.graph + ".xml"
+                                if ("download" in document.createElement("a")) {
+                                    // 非IE下载
+                                    const elink = document.createElement("a");
+                                    elink.download = fileName;
+                                    elink.style.display = "none";
+                                    elink.href = URL.createObjectURL(blob);
+                                    document.body.appendChild(elink);
+                                    elink.click();
+                                    URL.revokeObjectURL(elink.href);
+                                    document.body.removeChild(elink);
+                                } else {
+                                    navigator.msSaveBlob(blob, fileName);
+                                }
+                            }else{
+                                const blob = new Blob([data])
+                                let fileName = this.graph + ".txt"
+                                if ("download" in document.createElement("a")) {
+                                    // 非IE下载
+                                    const elink = document.createElement("a");
+                                    elink.download = fileName;
+                                    elink.style.display = "none";
+                                    elink.href = URL.createObjectURL(blob);
+                                    document.body.appendChild(elink);
+                                    elink.click();
+                                    URL.revokeObjectURL(elink.href);
+                                    document.body.removeChild(elink);
+                                } else {
+                                    navigator.msSaveBlob(blob, fileName);
+                                }
+                            }
+                        })
+                    }else{
+                        this.$message.warning('当前还没有数据集可导出')
+                    }
                 }else{
-                    this.$message.warning('当前还没有数据集可导出')
+                    this.$message.error('请选择导出数据集格式！')
                 }
             }
         }
